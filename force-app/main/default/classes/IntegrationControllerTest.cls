@@ -1,5 +1,5 @@
 @IsTest
-private class IntegrationResourceTest {
+private class IntegrationControllerTest {
 
     private static String requestName = 'TestRequest';
     private static String requestBody = '';
@@ -16,10 +16,10 @@ private class IntegrationResourceTest {
         setupMocks(responseAccount);
         RestContext.request = buildRequest();
 
-        IntegrationResource.IntegrationResponse response;
+        IntegrationController.IntegrationResponse response;
         Test.startTest();
         {
-            response = IntegrationResource.getResponse();
+            response = IntegrationController.getResponse();
         }
         Test.stopTest();
         System.assertNotEquals(null, response);
@@ -35,11 +35,11 @@ private class IntegrationResourceTest {
         setupMocks(responseAccount);
         RestContext.request = buildRequest();
 
-        IntegrationResource.IntegrationResponse response;
+        IntegrationController.IntegrationResponse response;
         Test.startTest();
         {
 
-            response = IntegrationResource.postResponse();
+            response = IntegrationController.postResponse();
         }
         Test.stopTest();
 
@@ -56,10 +56,10 @@ private class IntegrationResourceTest {
         setupMocks(responseAccount);
         RestContext.request = buildRequest();
 
-        IntegrationResource.IntegrationResponse response;
+        IntegrationController.IntegrationResponse response;
         Test.startTest();
         {
-            response = IntegrationResource.putResponse();
+            response = IntegrationController.putResponse();
         }
         Test.stopTest();
 
@@ -76,11 +76,11 @@ private class IntegrationResourceTest {
         setupMocks(responseAccount);
         RestContext.request = buildRequest();
 
-        IntegrationResource.IntegrationResponse response;
+        IntegrationController.IntegrationResponse response;
         Test.startTest();
         {
 
-            response = IntegrationResource.patchResponse();
+            response = IntegrationController.patchResponse();
         }
         Test.stopTest();
 
@@ -98,11 +98,11 @@ private class IntegrationResourceTest {
         setupMocks(responseAccount);
         RestContext.request = buildRequest();
 
-        IntegrationResource.IntegrationResponse response;
+        IntegrationController.IntegrationResponse response;
         Test.startTest();
         {
 
-            response = IntegrationResource.deleteResponse();
+            response = IntegrationController.deleteResponse();
         }
         Test.stopTest();
 
@@ -122,10 +122,10 @@ private class IntegrationResourceTest {
         stub.setException('processGet', new IntegrationConfigurationService.IntegrationConfigurationServiceException(exceptionMessage));
         IntegrationServiceFactory.setMock((IIntegrationService) stub.instance,null);
 
-        IntegrationResource.IntegrationResponse response;
+        IntegrationController.IntegrationResponse response;
         Test.startTest();
         {
-            response = IntegrationResource.getResponse();
+            response = IntegrationController.getResponse();
         }
         Test.stopTest();
         System.assertNotEquals(null, response);

@@ -1,5 +1,5 @@
 @RestResource(UrlMapping='/integrations/*')
-global class IntegrationResource {
+global class IntegrationController {
 
     global class IntegrationResponse {
 
