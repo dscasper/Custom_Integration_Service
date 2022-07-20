@@ -1,0 +1,14 @@
+@startuml
+
+class IntegrationController
+class IntegrationService
+class IntegrationServiceFactory
+class IntegrationConfigurationService
+interface IIntegrationService
+
+IntegrationController <-- IntegrationServiceFactory
+IntegrationServiceFactory <-- IntegrationConfigurationService
+IntegrationServiceFactory <-- IIntegrationService
+IIntegrationService <--IntegrationService
+
+@enduml

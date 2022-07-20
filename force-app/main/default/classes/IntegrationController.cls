@@ -114,6 +114,10 @@ global class IntegrationController {
             returnResponse.StatusCode = 400;
             returnResponse.Error = controllerException.getMessage();
         }
+        catch(IntegrationService.IntegrationServiceException serviceException){
+            returnResponse.StatusCode = serviceException.StatusCode;
+            returnResponse.Error = serviceException.getMessage();
+        }
         catch (IntegrationConfigurationService.IntegrationConfigurationServiceException configEx){
             returnResponse.StatusCode = 404;
             returnResponse.Error = configEx.getMessage();
