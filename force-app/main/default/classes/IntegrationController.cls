@@ -22,48 +22,65 @@ global class IntegrationController {
     private enum RequestType { GET, POST, PUT, PATCH, DEL}
 
     @HttpGet
-    global static IntegrationResponse getResponse(){
+    global static void getResponse(){
 
         processRequest(RequestType.GET);
-        return returnResponse;
+        setRestResponse(returnResponse);
     }
 
     @HttpPost
-    global static IntegrationResponse postResponse(){
+    global static void postResponse(){
 
         processRequest(RequestType.POST);
-        return returnResponse;
+        setRestResponse(returnResponse);
     }
 
     @HttpPut
-    global static IntegrationResponse putResponse(){
+    global static void putResponse(){
 
         processRequest(RequestType.PUT);
-        return returnResponse;
+        setRestResponse(returnResponse);
     }
 
     @HttpPatch
-    global static IntegrationResponse patchResponse(){
+    global static void patchResponse(){
 
         processRequest(RequestType.PATCH);
-        return returnResponse;
+        setRestResponse(returnResponse);
     }
 
     @HttpDelete
-    global static IntegrationResponse deleteResponse(){
+    global static void deleteResponse(){
 
         processRequest(RequestType.DEL);
-        return returnResponse;
+        setRestResponse(returnResponse);
     }
 
     private static void getRequest(){
 
         RestRequest request = RestContext.request;
-        integrationConfigName = request.requestURI.substring(request.requestURI.lastIndexOf('/')+1);
+        integrationConfigName = getIntegrationConfigName(request.requestURI);
         System.debug(integrationConfigName);
         requestBody = request.requestBody.toString();
         integrationService = IntegrationServiceFactory.newInstance(integrationConfigName);
 
+    }
+
+    private static String getIntegrationConfigName(String requestURI){
+        System.debug(requestURI);
+        List<String> requestURIPath = requestURI.split('/');
+        if (requestURIPath.size() <= 2) {
+            throw new IntegrationControllerException('The requested resource does not exist');
+        }
+
+        return requestURIPath[2];
+    }
+
+
+    private static void setRestResponse(IntegrationResponse response){
+        RestResponse restResponse = RestContext.response;
+        restResponse.statusCode = response.StatusCode;
+        restResponse.responseBody = Blob.valueOf(JSON.serialize(response));
     }
 
     private static void processRequest(RequestType requestType){
@@ -91,9 +108,17 @@ global class IntegrationController {
                     returnObject = integrationService.processDelete(requestBody);
                 }
             }
-
             returnResponse.Value = JSON.serialize(returnObject);
-        } catch (Exception ex) {
+        }
+        catch(IntegrationControllerException controllerException){
+            returnResponse.StatusCode = 400;
+            returnResponse.Error = controllerException.getMessage();
+        }
+        catch (IntegrationConfigurationService.IntegrationConfigurationServiceException configEx){
+            returnResponse.StatusCode = 404;
+            returnResponse.Error = configEx.getMessage();
+        }
+        catch (Exception ex) {
 
             System.debug(ex.getMessage());
             System.debug(ex.getStackTraceString());
@@ -106,4 +131,7 @@ global class IntegrationController {
         }
 
     }
+
+
+    public class IntegrationControllerException extends Exception{}
 }

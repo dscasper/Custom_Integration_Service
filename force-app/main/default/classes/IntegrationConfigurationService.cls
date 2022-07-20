@@ -5,7 +5,7 @@ public class IntegrationConfigurationService {
 
         selectIntegrationConfiguration(integrationConfigurationName);
         if(integrationConfigurations.isEmpty()){
-            throw new IntegrationConfigurationServiceException('There is no integration configured with that name');
+            throw new IntegrationConfigurationServiceException('The requested resource does not exist');
         }
         return  integrationConfigurations[0];
 
